@@ -1,0 +1,39 @@
+package ru.practicum.entity;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.time.Instant;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "hits", schema = "public")
+public class HitEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "app")
+    private String app;
+
+    @Column(name = "uri")
+    private String uri;
+
+    @Column(name = "ip")
+    private String ip;
+
+    @Column(name = "timestamp")
+    private Instant timestamp;
+
+    @Transient
+    private Long hits;
+}
