@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StatsServiceImpl implements StatsService{
+public class StatsServiceImpl implements StatsService {
 
     private final StatsRepository repository;
 

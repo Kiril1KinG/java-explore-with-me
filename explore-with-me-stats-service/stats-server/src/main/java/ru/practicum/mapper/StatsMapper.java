@@ -15,6 +15,7 @@ public interface StatsMapper {
 
     DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(DateTimeValidator.DATE_TIME_PATTERN);
     LocalDateTime ldt = LocalDateTime.now();
+
     @Mapping(target = "timestamp", expression = "java(ldt.parse(dto.getTimestamp(), FORMATTER))")
     HitEntity toEntity(HitCreateDto dto);
 

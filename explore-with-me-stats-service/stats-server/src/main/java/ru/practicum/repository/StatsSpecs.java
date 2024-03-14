@@ -6,7 +6,7 @@ import ru.practicum.entity.HitEntity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public abstract class StatsSpecs{
+public abstract class StatsSpecs {
 
     public static Specification<HitEntity> isStartGreaterThanOrEqualTo(LocalDateTime start) {
         return ((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("timestamp"), start));
