@@ -2,12 +2,12 @@ package ru.practicum.service;
 
 import ru.practicum.entity.HitEntity;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StatsService {
 
-    HitEntity addHit(HitEntity entity);
+    void addHit(HitEntity entity);
 
-    List<HitEntity> getStats(Instant start, Instant end, List<String> uris, Boolean unique);
+    List<HitEntity> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique);
 }

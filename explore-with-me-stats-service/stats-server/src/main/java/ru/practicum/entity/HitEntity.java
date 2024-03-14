@@ -2,18 +2,21 @@ package ru.practicum.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "hits", schema = "public")
 public class HitEntity {
@@ -32,8 +35,8 @@ public class HitEntity {
     private String ip;
 
     @Column(name = "timestamp")
-    private Instant timestamp;
+    private LocalDateTime timestamp;
 
     @Transient
-    private Long hits;
+    private long hits;
 }

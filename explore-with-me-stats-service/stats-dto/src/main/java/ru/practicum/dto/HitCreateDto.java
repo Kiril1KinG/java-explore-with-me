@@ -2,15 +2,17 @@ package ru.practicum.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
+import javax.validation.constraints.Pattern;
 
 
 @Getter
 @Setter
+@ToString
 public class HitCreateDto {
 
     @NotEmpty
@@ -26,5 +28,7 @@ public class HitCreateDto {
     private String ip;
 
     @NotNull
-    private Instant timestamp;
+    @NotEmpty
+    @Pattern(regexp = "^\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d")
+    private String timestamp;
 }
