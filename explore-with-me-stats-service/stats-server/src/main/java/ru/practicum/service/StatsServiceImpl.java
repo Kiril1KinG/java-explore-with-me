@@ -29,10 +29,10 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public List<HitEntity> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        Specification<HitEntity> StatsSpec = Specification.where(StatsSpecs.urisIn(uris))
+        Specification<HitEntity> statsSpec = Specification.where(StatsSpecs.urisIn(uris))
                 .and(StatsSpecs.isStartGreaterThanOrEqualTo(start))
                 .and(StatsSpecs.isEndLessThanOrEqualTo(end));
-        List<HitEntity> entities = repository.findAll(StatsSpec, Sort.by("app", "uri", "ip"));
+        List<HitEntity> entities = repository.findAll(statsSpec, Sort.by("app", "uri", "ip"));
 
         List<HitEntity> result = new ArrayList<>();
         int idx = 0;
