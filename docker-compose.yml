@@ -11,7 +11,7 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsdb
       - SPRING_DATASOURCE_USERNAME=stats_admin
-      - SPRING_DATASOURCE_PASSWORD=s1at$
+      - SPRING_DATASOURCE_PASSWORD=s1ats
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
 
   stats-db:
