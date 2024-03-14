@@ -35,7 +35,7 @@ public class StatsClient {
         body.setIp(ip);
         body.setTimestamp(LocalDateTime.now().format(DATE_TIME_FORMATTER));
         try {
-            rest.postForEntity("/hit", body, null);
+            rest.postForEntity("/hit", body, Object.class);
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException("Can't add hit", e);
         }
