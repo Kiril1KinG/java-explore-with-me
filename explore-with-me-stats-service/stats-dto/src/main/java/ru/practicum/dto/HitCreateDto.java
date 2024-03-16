@@ -29,6 +29,8 @@ public class HitCreateDto {
 
     @NotNull
     @NotEmpty
-    @Pattern(regexp = "^\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d")
+    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$")
+    // valid format example: 2023-12-06 12:34:56
+    // yyyy-MM-dd HH:mm:ss
     private String timestamp;
 }
