@@ -1,9 +1,11 @@
 package ru.practicum.validation;
 
+import org.springframework.stereotype.Component;
 import ru.practicum.Exception.DateTimeValidationException;
 
 import java.time.LocalDateTime;
 
+@Component
 public class DateTimeValidator {
 
     public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";

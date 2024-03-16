@@ -30,7 +30,7 @@ public class StatsController {
 
     private final StatsService service;
     private final StatsMapper mapper;
-    private final DateTimeValidator dateTimeValidator = new DateTimeValidator();
+    private final DateTimeValidator dateTimeValidator;
 
     @PostMapping("/hit")
     @ResponseStatus(code = HttpStatus.CREATED)
