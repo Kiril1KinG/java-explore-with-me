@@ -14,13 +14,13 @@ public class ErrorHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handle(DateTimeValidationException e) {
-        log.warn(e.getMessage());
+        log.warn(e.getMessage(), e);
         return Map.of("Bad DateTime value:", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handle(ConstraintViolationException e) {
-        log.warn(e.getMessage());
+        log.warn(e.getMessage(), e);
         return Map.of("Bad request:", e.getMessage());
     }
 }
