@@ -1,26 +1,51 @@
 version: '3.1'
 services:
-  stats-server:
-    build: explore-with-me-stats-service/stats-server
-    image: stats-server-image
-    container_name: stats-server-container
+  main-service:
+    build: explore-with-me-main-service
+    image: main-service-image
+    container_name: main-service-container
     ports:
-      - "9090:9090"
+      - "8080:8080"
     depends_on:
-      - stats-db
+#      - stats-server
+      - main-service-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsdb
-      - SPRING_DATASOURCE_USERNAME=stats_admin
-      - SPRING_DATASOURCE_PASSWORD=s1ats
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-service-db:5432/servicedb
+      - SPRING_DATASOURCE_USERNAME=service_admin
+      - SPRING_DATASOURCE_PASSWORD=adm!n
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
 
-  stats-db:
+  main-service-db:
     image: postgres:14-alpine
-    container_name: stats-db-container
+    container_name: main-service-db-container
     ports:
-      - "6541:5432"
+      - "6542:5432"
     environment:
-      - POSTGRES_PASSWORD=s1ats
-      - POSTGRES_USER=stats_admin
-      - POSTGRES_DB=statsdb
+      - POSTGRES_PASSWORD=adm!n
+      - POSTGRES_USER=service_admin
+      - POSTGRES_DB=servicedb
+
+#  stats-server:
+#    build: explore-with-me-stats-service/stats-server
+#    image: stats-server-image
+#    container_name: stats-server-container
+#    ports:
+#      - "9090:9090"
+#    depends_on:
+#      - stats-db
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsdb
+#      - SPRING_DATASOURCE_USERNAME=stats_admin
+#      - SPRING_DATASOURCE_PASSWORD=s1ats
+#      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+#
+#  stats-db:
+#    image: postgres:14-alpine
+#    container_name: stats-db-container
+#    ports:
+#      - "6541:5432"
+#    environment:
+#      - POSTGRES_PASSWORD=s1ats
+#      - POSTGRES_USER=stats_admin
+#      - POSTGRES_DB=statsdb
 

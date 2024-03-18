@@ -27,7 +27,7 @@ public class HitCreateDto {
     @NotBlank
     private String ip;
 
-    @NotNull
+    @NotBlank
     @NotEmpty
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$")
     // valid format example: 2023-12-06 12:34:56
