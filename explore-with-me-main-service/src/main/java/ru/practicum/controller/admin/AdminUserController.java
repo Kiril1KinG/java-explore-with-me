@@ -18,6 +18,7 @@ import ru.practicum.dto.UserDto;
 import ru.practicum.mapper.UserMapper;
 import ru.practicum.service.UserServiceImpl;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class AdminUserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto addUser(@RequestBody NewUserRequest newUserRequest) {
+    public UserDto addUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("POST admin/users");
         return mapper.toUserDto(service.addUser(mapper.toUser(newUserRequest)));
     }
@@ -50,7 +51,7 @@ public class AdminUserController {
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long userId) {
+    public void deleteUser(@PathVariable @Min(1) Long userId) {
         service.deleteUser(userId);
     }
 }
