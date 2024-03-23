@@ -35,8 +35,8 @@ public class AdminCompilationController {
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDto addCompilation(@RequestBody @Valid NewCompilationDto newCompilationDto) {
         log.info("POST /admin/compilations");
-        return compilationMapper.toCompilationDto(compilationService.
-                addCompilation(compilationMapper.toCompilation(newCompilationDto)));
+        return compilationMapper.toCompilationDto(compilationService
+                .addCompilation(compilationMapper.toCompilation(newCompilationDto)));
     }
 
     @DeleteMapping("/{compId}")

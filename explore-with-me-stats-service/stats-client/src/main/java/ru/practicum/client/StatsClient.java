@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -14,12 +13,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.dto.HitCreateDto;
 import ru.practicum.dto.HitStatsDto;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class StatsClient {
@@ -67,7 +63,8 @@ public class StatsClient {
         }
         builder.encode();
         try {
-             return rest.exchange(builder.build(false).toUriString(), HttpMethod.GET, null, new ParameterizedTypeReference<List<HitStatsDto>>() {}).getBody();
+            return rest.exchange(builder.build(false).toUriString(), HttpMethod.GET, null, new ParameterizedTypeReference<List<HitStatsDto>>() {
+            }).getBody();
         } catch (HttpStatusCodeException e) {
             throw new RuntimeException("Can't get stats hit", e);
         }
