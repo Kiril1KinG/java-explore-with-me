@@ -2,7 +2,7 @@ package ru.practicum.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.model.EventRequestStatus;
+import ru.practicum.model.enumiration.ParticipationStatus;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,8 +14,8 @@ public class EventRequestStatusUpdateRequest {
 
     @NotNull
     @NotEmpty
-    private List<Integer> requestIds;
+    private List<Long> requestIds;
 
     @NotNull
-    private EventRequestStatus status;
+    private ParticipationStatus status;
 }

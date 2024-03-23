@@ -1,7 +1,7 @@
 package ru.practicum.validation;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.Exception.DateTimeValidationException;
+import ru.practicum.exception.DateTimeValidationException;
 
 import java.time.LocalDateTime;
 

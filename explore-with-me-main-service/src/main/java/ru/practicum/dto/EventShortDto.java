@@ -3,8 +3,6 @@ package ru.practicum.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import ru.practicum.dto.UserShortDto;
-
 @Getter
 @Setter
 public class EventShortDto {
@@ -15,7 +13,7 @@ public class EventShortDto {
     private Integer confirmedRequests;
     private String eventDate;
     private UserShortDto initiator;
-    private boolean paid;
+    private Boolean paid;
     private String title;
     private Long views;
 }

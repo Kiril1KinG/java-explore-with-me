@@ -2,7 +2,7 @@ package ru.practicum.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.model.ParticipationStatus;
+import ru.practicum.model.enumiration.ParticipationStatus;
 
 @Getter
 @Setter

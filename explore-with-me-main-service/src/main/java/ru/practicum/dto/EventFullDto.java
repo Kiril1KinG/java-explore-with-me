@@ -2,7 +2,7 @@ package ru.practicum.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.model.EventState;
+import ru.practicum.model.enumiration.EventState;
 
 @Getter
 @Setter
@@ -16,10 +16,11 @@ public class EventFullDto {
     private String description;
     private String eventDate;
     private UserShortDto initiator;
-    private Location location;
-    private boolean paid;
-    private Integer participantLimit = 0;
-    private boolean requestModeration = true;
+    private LocationDto location;
+    private Boolean paid;
+    private Integer participantLimit;
+    private String publishedOn;
+    private Boolean requestModeration;
     private EventState state;
     private String title;
     private Long views;
