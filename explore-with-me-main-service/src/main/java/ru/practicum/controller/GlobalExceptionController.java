@@ -1,6 +1,7 @@
 package ru.practicum.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,7 +16,6 @@ import ru.practicum.exception.StateException;
 import ru.practicum.exception.UnknownParamException;
 
 import javax.validation.ConstraintViolationException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -123,7 +123,7 @@ public class GlobalExceptionController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handle(SQLIntegrityConstraintViolationException e) {
+    public ApiError handle(PSQLException e) {
         log.warn(e.getMessage(), e);
         return new ApiError(
                 e.getMessage(),

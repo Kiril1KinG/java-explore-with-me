@@ -1,6 +1,7 @@
 package ru.practicum.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -22,13 +23,12 @@ public class StatsClient {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
     private final RestTemplate rest;
 
     @Autowired
-    public StatsClient(RestTemplateBuilder builder) {
+    public StatsClient(@Value("${STATS_SERVER_URI:http://localhost:9090}") String uri, RestTemplateBuilder builder) {
         rest = builder
-                .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:9090"))
+                .uriTemplateHandler(new DefaultUriBuilderFactory(uri))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                 .build();
     }
@@ -51,10 +51,7 @@ public class StatsClient {
                 .queryParam("start", start.format(DATE_TIME_FORMATTER))
                 .queryParam("end", end.format(DATE_TIME_FORMATTER))
                 .encode();
-//        Map<String, Object> params = new HashMap<>(Map.of(
-//                "start", start.format(DATE_TIME_FORMATTER),
-//                "end", end.format(DATE_TIME_FORMATTER)
-//        ));
+
         if (uris != null) {
             builder.queryParam("uris", uris);
         }
@@ -62,6 +59,7 @@ public class StatsClient {
             builder.queryParam("unique", unique);
         }
         builder.encode();
+
         try {
             return rest.exchange(builder.build(false).toUriString(), HttpMethod.GET, null, new ParameterizedTypeReference<List<HitStatsDto>>() {
             }).getBody();

@@ -11,6 +11,7 @@ services:
       - main-service-db
     environment:
       - SERVER_PORT=8080
+      - STATS_SERVER_URI=http://stats-server:9090
       - SPRING_DATASOURCE_URL=jdbc:postgresql://main-service-db:5432/servicedb
       - SPRING_DATASOURCE_USERNAME=service_admin
       - SPRING_DATASOURCE_PASSWORD=adm1n
