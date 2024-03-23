@@ -12,7 +12,7 @@ public class DateTimeValidator {
 
     public void validate(LocalDateTime start, LocalDateTime end) {
         if (end.isBefore(start)) {
-            throw new DateTimeValidationException("Incorrect DateTime, end can nor be before start");
+            throw new DateTimeValidationException("Incorrect DateTime, end can not be before start");
         }
     }
 }

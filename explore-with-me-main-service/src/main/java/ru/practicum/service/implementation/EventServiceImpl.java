@@ -308,6 +308,7 @@ public class EventServiceImpl implements EventService {
             event.setConfirmedRequests(idsAndConfirmedRequests.getOrDefault(event.getId(), 0));
             statsClient.addHit(APP, "/events/" + event.getId(), httpRequest.getRemoteAddr());
         }
+        statsClient.addHit(APP, "/events", httpRequest.getRemoteAddr());
         return events;
     }
 

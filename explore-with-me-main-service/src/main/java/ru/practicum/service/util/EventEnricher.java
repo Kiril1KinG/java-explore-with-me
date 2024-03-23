@@ -47,6 +47,9 @@ public class EventEnricher {
         for (HitStatsDto stat : stats) {
             int charIndex = stat.getUri().substring(1).indexOf("/");
             String value = stat.getUri().substring(charIndex + 2);
+            if (value.equals("events")) {
+                continue;
+            }
             eventsIdsAndViews.put(Long.parseLong(value), stat.getHits());
         }
         return eventsIdsAndViews;
