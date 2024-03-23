@@ -5,7 +5,7 @@ services:
     image: main-service-image
     container_name: main-service-container
     ports:
-      - "8081:8080"
+      - "8080:8080"
     depends_on:
       - stats-server
       - main-service-db
@@ -31,7 +31,7 @@ services:
     image: stats-server-image
     container_name: stats-server-container
     ports:
-      - "9091:9090"
+      - "9090:9090"
     depends_on:
       - stats-db
     environment:
