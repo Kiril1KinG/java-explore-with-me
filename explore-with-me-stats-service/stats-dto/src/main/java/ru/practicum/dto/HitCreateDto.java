@@ -6,7 +6,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
@@ -27,7 +26,7 @@ public class HitCreateDto {
     @NotBlank
     private String ip;
 
-    @NotNull
+    @NotBlank
     @NotEmpty
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$")
     // valid format example: 2023-12-06 12:34:56

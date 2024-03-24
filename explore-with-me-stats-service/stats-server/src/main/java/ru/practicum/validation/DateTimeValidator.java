@@ -1,7 +1,7 @@
 package ru.practicum.validation;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.Exception.DateTimeValidationException;
+import ru.practicum.exception.DateTimeValidationException;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ public class DateTimeValidator {
 
     public void validate(LocalDateTime start, LocalDateTime end) {
         if (end.isBefore(start)) {
-            throw new DateTimeValidationException("Incorrect DateTime, end can nor be before start");
+            throw new DateTimeValidationException("Incorrect DateTime, end can not be before start");
         }
     }
 }

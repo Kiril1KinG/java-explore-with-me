@@ -40,8 +40,8 @@ public class StatsController {
     }
 
     @GetMapping("/stats")
-    public List<HitStatsDto> getStats(@RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime start,
-                                      @RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime end,
+    public List<HitStatsDto> getStats(@RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN, fallbackPatterns = "yyyy-MM-dd%20HH:mm:ss") LocalDateTime start,
+                                      @RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN, fallbackPatterns = "yyyy-MM-dd%20HH:mm:ss") LocalDateTime end,
                                       @RequestParam(required = false) List<String> uris,
                                       @RequestParam(required = false, defaultValue = "false") Boolean unique) {
         dateTimeValidator.validate(start, end);
