@@ -1,6 +1,8 @@
 package ru.practicum.exception;
 
-public class BadQueryParamsException extends RuntimeException {
+import javax.validation.ValidationException;
+
+public class BadQueryParamsException extends ValidationException {
     public BadQueryParamsException(String message) {
         super(message);
     }

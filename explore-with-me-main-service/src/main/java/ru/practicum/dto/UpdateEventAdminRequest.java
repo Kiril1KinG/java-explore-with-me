@@ -24,8 +24,8 @@ public class UpdateEventAdminRequest {
     private String description;
 
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$")
-    //Valid value example: 2023-12-34 12:34:57
-    //Format yyyy-MM-dd HH:mm:ss
+    // Valid value example: 2023-12-34 12:34:57
+    // Format yyyy-MM-dd HH:mm:ss
     private String eventDate;
 
     private LocationDto location;

@@ -39,7 +39,6 @@ public interface EventMapper {
 
     @Mapping(target = "eventDate", expression = "java(event.getEventDate().format(FORMATTER))")
     @Mapping(target = "createdOn", expression = "java(event.getCreatedOn().format(FORMATTER))")
-//    @Mapping(target = "publishedOn", qualifiedByName = "parseDateTime")
     EventFullDto toEventFullDto(Event event);
 
     EventShortDto toEventShortDto(Event event);

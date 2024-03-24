@@ -16,6 +16,7 @@ import ru.practicum.exception.StateException;
 import ru.practicum.exception.UnknownParamException;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -25,9 +26,12 @@ public class GlobalExceptionController {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    @ExceptionHandler
+    @ExceptionHandler({BadQueryParamsException.class,
+            ConstraintViolationException.class,
+            UnknownParamException.class
+    })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handle(BadQueryParamsException e) {
+    public ApiError handle(ValidationException e) {
         log.warn(e.getMessage(), e);
         return new ApiError(
                 e.getMessage(),
@@ -37,31 +41,7 @@ public class GlobalExceptionController {
         );
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handle(ConstraintViolationException e) {
-        log.warn(e.getMessage(), e);
-        return new ApiError(
-                e.getMessage(),
-                "Validation for input object failed.",
-                HttpStatus.BAD_REQUEST,
-                LocalDateTime.now().format(FORMATTER)
-        );
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handle(UnknownParamException e) {
-        log.warn(e.getMessage(), e);
-        return new ApiError(
-                e.getMessage(),
-                "Unknown parameter.",
-                HttpStatus.BAD_REQUEST,
-                LocalDateTime.now().format(FORMATTER)
-        );
-    }
-
-    @ExceptionHandler
+    @ExceptionHandler(DataNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handle(DataNotFoundException e) {
         log.warn(e.getMessage(), e);
@@ -73,9 +53,14 @@ public class GlobalExceptionController {
         );
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({DateTimeException.class,
+            StateException.class,
+            ParticipationRequestConflictException.class,
+            ParticipationLimitException.class,
+            PSQLException.class
+    })
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handle(DateTimeException e) {
+    public ApiError handle(RuntimeException e) {
         log.warn(e.getMessage(), e);
         return new ApiError(
                 e.getMessage(),
@@ -84,53 +69,4 @@ public class GlobalExceptionController {
                 LocalDateTime.now().format(FORMATTER)
         );
     }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handle(StateException e) {
-        log.warn(e.getMessage(), e);
-        return new ApiError(
-                e.getMessage(),
-                "State error.",
-                HttpStatus.CONFLICT,
-                LocalDateTime.now().format(FORMATTER)
-        );
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handle(ParticipationRequestConflictException e) {
-        log.warn(e.getMessage(), e);
-        return new ApiError(
-                e.getMessage(),
-                "State error.",
-                HttpStatus.CONFLICT,
-                LocalDateTime.now().format(FORMATTER)
-        );
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handle(ParticipationLimitException e) {
-        log.warn(e.getMessage(), e);
-        return new ApiError(
-                e.getMessage(),
-                "Participation limit error.",
-                HttpStatus.CONFLICT,
-                LocalDateTime.now().format(FORMATTER)
-        );
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handle(PSQLException e) {
-        log.warn(e.getMessage(), e);
-        return new ApiError(
-                e.getMessage(),
-                "Integrity constraint exception",
-                HttpStatus.CONFLICT,
-                LocalDateTime.now().format(FORMATTER)
-        );
-    }
-
 }
