@@ -35,7 +35,7 @@ public class GlobalExceptionController {
         log.warn(e.getMessage(), e);
         return new ApiError(
                 e.getMessage(),
-                "Validation for input object failed.",
+                "Validation failed.",
                 HttpStatus.BAD_REQUEST,
                 LocalDateTime.now().format(FORMATTER)
         );
@@ -64,7 +64,7 @@ public class GlobalExceptionController {
         log.warn(e.getMessage(), e);
         return new ApiError(
                 e.getMessage(),
-                "Incorrect datetime.",
+                "Conflating params.",
                 HttpStatus.CONFLICT,
                 LocalDateTime.now().format(FORMATTER)
         );
