@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.model.enumiration.EventState;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class EventFullDto {
@@ -24,4 +26,5 @@ public class EventFullDto {
     private EventState state;
     private String title;
     private Long views;
+    private List<CommentDto> comments;
 }

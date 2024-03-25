@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.dto.CommentDto;
 import ru.practicum.dto.EventFullDto;
 import ru.practicum.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.dto.EventRequestStatusUpdateResult;
 import ru.practicum.dto.EventShortDto;
+import ru.practicum.dto.NewCommentDto;
 import ru.practicum.dto.NewEventDto;
 import ru.practicum.dto.ParticipationRequestDto;
 import ru.practicum.dto.UpdateEventUserRequest;
+import ru.practicum.mapper.CommentMapper;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.ParticipationRequestMapper;
 import ru.practicum.model.entity.ParticipationRequest;
@@ -42,6 +46,7 @@ public class PrivateEventController {
     private final EventService service;
     private final EventMapper mapper;
     private final ParticipationRequestMapper requestMapper;
+    private final CommentMapper commentMapper;
 
     @GetMapping
     public Collection<EventShortDto> getEventsByCurrentUser(@PathVariable @Min(1) Long userId,
@@ -101,5 +106,23 @@ public class PrivateEventController {
                 .map(requestMapper::toParticipationRequestDto)
                 .collect(Collectors.toList()));
         return result;
+    }
+
+    @PostMapping("/{eventId}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto addComment(@PathVariable @Min(1) Long userId,
+                                 @PathVariable @Min(1) Long eventId,
+                                 @RequestBody @Valid NewCommentDto newCommentDto) {
+        log.info("POST /users/{}/events/{}/comments", userId, eventId);
+        return commentMapper.toCommentDto(service.addComment(commentMapper.toComment(userId, eventId, newCommentDto)));
+    }
+
+    @DeleteMapping("/{eventId}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeComment(@PathVariable @Min(1) Long userId,
+                              @PathVariable @Min(1) Long eventId,
+                              @PathVariable @Min(1) Long commentId) {
+        log.info("POST /users/{}/events/{}/comments/{}", userId, eventId, commentId);
+        service.removeComment(userId, eventId, commentId);
     }
 }

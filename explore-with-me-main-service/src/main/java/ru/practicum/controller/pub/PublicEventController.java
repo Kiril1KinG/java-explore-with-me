@@ -44,6 +44,7 @@ public class PublicEventController {
                                                        @RequestParam(required = false, defaultValue = "0") @Min(0) Integer from,
                                                        @RequestParam(required = false, defaultValue = "10") @Min(1) Integer size,
                                                        HttpServletRequest httpServletRequest) {
+        log.info("GET /events");
         return eventService.getEventsByFilters(
                         new PublicEventFilter(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size), httpServletRequest).stream()
                 .map(eventMapper::toEventFullDto)
@@ -53,6 +54,7 @@ public class PublicEventController {
     @GetMapping("/{eventId}")
     public EventFullDto getEvent(@PathVariable @Min(1) Long eventId,
                                  HttpServletRequest httpServletRequest) {
+        log.info("GET /events/{}", eventId);
         return eventMapper.toEventFullDto(eventService.getEvent(eventId, httpServletRequest));
 
     }
