@@ -18,7 +18,10 @@
 								"exec": [
 									"pm.test(\"Ответ должен содержать код статуса 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
-									"});"
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"categoryId\", response.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -50,7 +53,10 @@
 								"exec": [
 									"pm.test(\"Ответ должен содержать код статуса 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
-									"});"
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"user1Id\", response.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -82,7 +88,10 @@
 								"exec": [
 									"pm.test(\"Ответ должен содержать код статуса 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
-									"});"
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"user2Id\", response.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -114,7 +123,10 @@
 								"exec": [
 									"pm.test(\"Ответ должен содержать код статуса 201\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
-									"});"
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"eventId\", response.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -146,7 +158,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "1"
+									"value": "{{user1Id}}"
 								}
 							]
 						}
@@ -201,11 +213,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -253,7 +265,7 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -303,11 +315,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "99"
+									"value": "99999"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -357,11 +369,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "99"
+									"value": "99999"
 								}
 							]
 						}
@@ -411,11 +423,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -456,11 +468,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -510,11 +522,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -536,6 +548,7 @@
 									"\r",
 									"const source = JSON.parse(pm.request.body.raw);\r",
 									"const target = pm.response.json();\r",
+									"pm.collectionVariables.set(\"commentId\", target.id);\r",
 									"\r",
 									"pm.test(\"Комментарий должен содержать поля id, text, createdOn, user\", function () {\r",
 									"    pm.expect(target).to.have.property(\"id\");\r",
@@ -549,7 +562,8 @@
 									"    pm.expect(target.text).equal(source.text, 'Текст комментария должен соответсвовать данным в запросе');\r",
 									"    pm.expect(target.user.id).equal(2, 'Id пользователя должен соответсвовать данным в запросе');\r",
 									"    pm.expect(target.user.name).equal(\"Второй юзер\", 'email пользователя должен соответсвовать данным в запросе');\r",
-									"});"
+									"});\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -583,11 +597,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -637,11 +651,11 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -696,7 +710,7 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								}
 							]
 						}
@@ -780,15 +794,15 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "99"
+									"value": "99999"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								},
 								{
 									"key": "commentId",
-									"value": "1"
+									"value": "{{commentId}}"
 								}
 							]
 						}
@@ -832,15 +846,15 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "99"
+									"value": "99999"
 								},
 								{
 									"key": "commentId",
-									"value": "1"
+									"value": "{{commentId}}"
 								}
 							]
 						}
@@ -884,15 +898,15 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								},
 								{
 									"key": "commentId",
-									"value": "99"
+									"value": "999999"
 								}
 							]
 						}
@@ -934,15 +948,15 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "2"
+									"value": "{{user2Id}}"
 								},
 								{
 									"key": "eventId",
-									"value": "1"
+									"value": "{{eventId}}"
 								},
 								{
 									"key": "commentId",
-									"value": "1"
+									"value": "{{commentId}}"
 								}
 							]
 						}
@@ -952,10 +966,57 @@
 			]
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "baseUrl",
 			"value": "http://localhost:8080"
+		},
+		{
+			"key": "user1Id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "user2Id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "eventId",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "commentId",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "0",
+			"type": "string"
 		}
 	]
 }
