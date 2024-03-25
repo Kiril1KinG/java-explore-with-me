@@ -1,6 +1,7 @@
 package ru.practicum.service.sample;
 
 import org.springframework.data.util.Pair;
+import ru.practicum.model.entity.Comment;
 import ru.practicum.model.entity.Event;
 import ru.practicum.model.entity.ParticipationRequest;
 import ru.practicum.model.enumiration.ParticipationStatus;
@@ -32,5 +33,9 @@ public interface EventService {
     Collection<ParticipationRequest> getRequestsForCurrentUser(Long userId, Long eventId);
 
     Pair<List<ParticipationRequest>, List<ParticipationRequest>> updateRequestsStatusForCurrentUser(Long userId, Long eventId, List<Long> requestsIds, ParticipationStatus status);
+
+    Comment addComment(Comment comment);
+
+    void removeComment(Long userId, Long eventId, Long commentId);
 
 }

@@ -16,6 +16,7 @@ import ru.practicum.exception.ParticipationRequestConflictException;
 import ru.practicum.exception.StateException;
 import ru.practicum.exception.UnknownParamException;
 import ru.practicum.model.entity.Category;
+import ru.practicum.model.entity.Comment;
 import ru.practicum.model.entity.Event;
 import ru.practicum.model.entity.ParticipationRequest;
 import ru.practicum.model.entity.User;
@@ -26,6 +27,7 @@ import ru.practicum.model.enumiration.UserUpdateEventStateAction;
 import ru.practicum.model.filter.AdminEventFilter;
 import ru.practicum.model.filter.PublicEventFilter;
 import ru.practicum.repository.jpaRepository.CategoryRepository;
+import ru.practicum.repository.jpaRepository.CommentRepository;
 import ru.practicum.repository.jpaRepository.EventRepository;
 import ru.practicum.repository.jpaRepository.ParticipationRequestRepository;
 import ru.practicum.repository.jpaRepository.UserRepository;
@@ -54,10 +56,9 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
-
+    private final CommentRepository commentRepository;
     private final ParticipationRequestRepository requestRepository;
     private final StatsClient statsClient;
-
     private final EventEnricher enricher;
 
     @Override
@@ -206,13 +207,18 @@ public class EventServiceImpl implements EventService {
                 .and(EventSpec.eventDateBeforeOrEqual(filter.getRangeEnd()));
         List<Event> events = eventRepository.findAll(spec, PageRequest.of(filter.getFrom() / filter.getSize(), filter.getSize())).getContent();
 
-        Map<Long, Integer> confirmedRequests = enricher.getConfirmedParticipationRequests(events.stream()
+        List<Long> eventsIds = events.stream()
                 .map(Event::getId)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+
+        Map<Long, Integer> confirmedRequests = enricher.getConfirmedParticipationRequests(eventsIds);
         events.forEach(event -> event.setConfirmedRequests(confirmedRequests.getOrDefault(event.getId(), 0)));
 
         Map<Long, Long> views = enricher.getEventsViews(events);
         events.forEach(event -> event.setViews(views.getOrDefault(event.getId(), 0L)));
+
+        Map<Long, List<Comment>> comments = enricher.getEventsComments(eventsIds);
+        events.forEach(event -> event.setComments(comments.getOrDefault(event.getId(), new ArrayList<>())));
         return events;
     }
 
@@ -301,11 +307,16 @@ public class EventServiceImpl implements EventService {
         } else {
             events = eventRepository.findAll(PageRequest.of(filter.getFrom() / filter.getSize(), filter.getSize())).getContent();
         }
-        idsAndConfirmedRequests = enricher.getConfirmedParticipationRequests(new ArrayList<>(idsAndViews.keySet()));
+        List<Long> eventsIds = events.stream()
+                .map(Event::getId)
+                .collect(Collectors.toList());
+        idsAndConfirmedRequests = enricher.getConfirmedParticipationRequests(eventsIds);
+        Map<Long, List<Comment>> comments = enricher.getEventsComments(eventsIds);
 
         for (Event event : events) {
             event.setViews(idsAndViews.getOrDefault(event.getId(), 0L));
             event.setConfirmedRequests(idsAndConfirmedRequests.getOrDefault(event.getId(), 0));
+            event.setComments(comments.getOrDefault(event.getId(), new ArrayList<>()));
             statsClient.addHit(APP, "/events/" + event.getId(), httpRequest.getRemoteAddr());
         }
         statsClient.addHit(APP, "/events", httpRequest.getRemoteAddr());
@@ -320,8 +331,36 @@ public class EventServiceImpl implements EventService {
         }
         event.setViews(enricher.getEventViews(event));
         event.setConfirmedRequests(enricher.getConfirmedParticipationRequests(List.of(eventId)).getOrDefault(eventId, 0));
+        event.setComments(enricher.getEventsComments(List.of(eventId)).getOrDefault(eventId, new ArrayList<>()));
         statsClient.addHit(APP, "/events/" + eventId, httpServletRequest.getRemoteAddr());
         return event;
+    }
+
+    @Override
+    public Comment addComment(Comment comment) {
+        Event event = findEventById(comment.getEvent().getId());
+        comment.setUser(findUserById(comment.getUser().getId()));
+        if (event.getState() != EventState.PUBLISHED) {
+            throw new DataNotFoundException(
+                    String.format("Event with id %d not published", event.getId()));
+        }
+        return commentRepository.save(comment);
+    }
+
+    @Override
+    public void removeComment(Long userId, Long eventId, Long commentId) {
+        findEventById(eventId);
+        findUserById(userId);
+        Comment comment = findCommentById(commentId);
+        if (!comment.getEvent().getId().equals(eventId)) {
+            throw new DataNotFoundException(
+                    String.format("Comment with id %d not found for event with id %d", commentId, eventId));
+        }
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new DataNotFoundException(
+                    String.format("Comment with id %d not found for user with id %d", commentId, userId));
+        }
+        commentRepository.deleteById(commentId);
     }
 
     private void checkEventDate(LocalDateTime eventDate) {
@@ -357,5 +396,11 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findById(eventId).orElseThrow(
                 () -> new DataNotFoundException(
                         String.format("Event with id %d not exists.", eventId)));
+    }
+
+    private Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new DataNotFoundException(
+                        String.format("Comment with id %d not exists.", commentId)));
     }
 }

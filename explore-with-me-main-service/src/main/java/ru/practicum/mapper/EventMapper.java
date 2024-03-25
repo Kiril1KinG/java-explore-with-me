@@ -13,7 +13,8 @@ import ru.practicum.model.entity.Event;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, CategoryMapper.class, LocationMapper.class})
+@Mapper(componentModel = "spring",
+        uses = {UserMapper.class, CategoryMapper.class, LocationMapper.class, CommentMapper.class})
 public interface EventMapper {
 
     DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -39,6 +40,7 @@ public interface EventMapper {
 
     @Mapping(target = "eventDate", expression = "java(event.getEventDate().format(FORMATTER))")
     @Mapping(target = "createdOn", expression = "java(event.getCreatedOn().format(FORMATTER))")
+    @Mapping(target = "comments", source = "event.comments")
     EventFullDto toEventFullDto(Event event);
 
     EventShortDto toEventShortDto(Event event);
