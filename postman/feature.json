@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "cbd1e344-21e4-40f0-950a-e826c4134638",
 		"name": "Comments",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30796950"
 	},
 	"item": [
@@ -40,7 +40,16 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/admin/categories"
+						"url": {
+							"raw": "{{baseUrl}}/admin/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"categories"
+							]
+						}
 					},
 					"response": []
 				},
@@ -75,7 +84,16 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/admin/users"
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
@@ -110,7 +128,16 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/admin/users"
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
@@ -557,10 +584,16 @@
 									"    pm.expect(target).to.have.property(\"user\");\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.text).equal(\"Комментарий\", 'Текст комментария должен соответсвовать данным в запросе');\r",
-									"    pm.expect(target.user.id).equal(pm.collectionVariables.get(\"user2Id\"), 'Id пользователя должен соответсвовать данным в запросе');\r",
-									"    pm.expect(target.user.name).equal(\"Второй юзер\", 'имя пользователя должно соответсвовать данным в запросе');\r",
+									"pm.test(\"Поле text должно соответствовать данным в запросе\", function () {\r",
+									"    pm.expect(target.text).equal(\"Комментарий\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Id пользователя дожен соответсовть данным в запросе\", function () {\r",
+									"    pm.expect(target.user.id).equal(pm.collectionVariables.get(\"user2Id\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Имя пользователя должно соответсвовать данным в запросе\", function () {\r",
+									"    pm.expect(target.user.name).equal(\"Второй юзер\");\r",
 									"});\r",
 									""
 								],
@@ -680,10 +713,19 @@
 									"    pm.expect(target).to.have.property('comments');\r",
 									"})\r",
 									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target).to.have.property(\"id\");\r",
+									"pm.test(\"Поле Id должно соответсвовать ожидаемому значению\", function () {\r",
+									"    pm.expect(target.comments[0].id).to.equal(pm.collectionVariables.get(\"commentId\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Текст комментария должен соответсвовать данным в запросе\", function () {\r",
 									"    pm.expect(target.comments[0].text).to.equal(\"Комментарий\", 'Текст комментария должен соответсвовать данным в запросе');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Id пользователя должен соответсвовать данным в запросе\", function () {\r",
 									"    pm.expect(target.comments[0].user.id).to.equal(pm.collectionVariables.get(\"user2Id\"), 'Id пользователя должен соответсвовать данным в запросе');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Email пользователя должен соответсвовать данным в запросе\", function () {\r",
 									"    pm.expect(target.comments[0].user.name).to.equal(\"Второй юзер\", 'email пользователя должен соответсвовать данным в запросе');\r",
 									"});\r",
 									"\r",
@@ -737,11 +779,20 @@
 									"    pm.expect(target[index]).to.have.property('comments');",
 									"})",
 									"",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {",
-									"    pm.expect(target[index]).to.have.property(\"id\");",
+									"pm.test(\"Поле Id должно соответсвовать ожидаемому значению\", function () {",
+									"    pm.expect(target[index].comments[0].id).to.equal(pm.collectionVariables.get(\"commentId\"));",
+									"});",
+									"",
+									"pm.test(\"Текст комментария должен соответсвовать данным в запросе\", function () {",
 									"    pm.expect(target[index].comments[0].text).to.equal(\"Комментарий\", 'Текст комментария должен соответсвовать данным в запросе');",
+									"});",
+									"",
+									"pm.test(\"Id пользователя должен соответсвовать данным в запросе\", function () {",
 									"    pm.expect(target[index].comments[0].user.id).to.equal(pm.collectionVariables.get(\"user2Id\"), 'Id пользователя должен соответсвовать данным в запросе');",
-									"    pm.expect(target[index].comments[0].user.name).to.equal(\"Второй юзер\", 'email пользователя должен соответствовать данным в запросе');",
+									"});",
+									"",
+									"pm.test(\"Email пользователя должен соответсвовать данным в запросе\", function () {",
+									"    pm.expect(target[index].comments[0].user.name).to.equal(\"Второй юзер\", 'email пользователя должен соответсвовать данным в запросе');",
 									"});",
 									"",
 									""
