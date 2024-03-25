@@ -561,7 +561,7 @@
 									"    pm.expect(target.id).equal(pm.collectionVariables.get(\"commentId\"));\r",
 									"    pm.expect(target.text).equal(source.text, 'Текст комментария должен соответсвовать данным в запросе');\r",
 									"    pm.expect(target.user.id).equal(pm.collectionVariables.get(\"user2Id\"), 'Id пользователя должен соответсвовать данным в запросе');\r",
-									"    pm.expect(target.user.name).equal(\"Второй юзер\", 'email пользователя должен соответсвовать данным в запросе');\r",
+									"    pm.expect(target.user.name).equal(\"Второй юзер\", 'имя пользователя должно соответсвовать данным в запросе');\r",
 									"});\r",
 									""
 								],
@@ -732,15 +732,17 @@
 									"",
 									"const target = pm.response.json();",
 									"",
+									"var index = pm.collectionVariables.get('eventId') - 1;",
+									"",
 									"pm.test('Ивент должен содержать полe comments', function () {",
 									"    pm.expect(target[0]).to.have.property('comments');",
 									"})",
 									"",
 									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {",
-									"    pm.expect(target[0].comments[0].id).to.equal(pm.collectionVariables.get(\"commentId\"));",
-									"    pm.expect(target[0].comments[0].text).to.equal(\"Комментарий\", 'Текст комментария должен соответсвовать данным в запросе');",
-									"    pm.expect(target[0].comments[0].user.id).to.equal(pm.collectionVariables.get(\"user2Id\"), 'Id пользователя должен соответсвовать данным в запросе');",
-									"    pm.expect(target[0].comments[0].user.name).to.equal(\"Второй юзер\", 'email пользователя должен соответсвовать данным в запросе');",
+									"    pm.expect(target[index].comments[0].id).to.equal(pm.collectionVariables.get(\"commentId\"));",
+									"    pm.expect(target[index].comments[0].text).to.equal(\"Комментарий\", 'Текст комментария должен соответсвовать данным в запросе');",
+									"    pm.expect(target[index].comments[0].user.id).to.equal(pm.collectionVariables.get(\"user2Id\"), 'Id пользователя должен соответсвовать данным в запросе');",
+									"    pm.expect(target[index].comments[0].user.name).to.equal(\"Второй юзер\", 'email пользователя должен соответствовать данным в запросе');",
 									"});",
 									"",
 									""
@@ -753,7 +755,25 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/events"
+						"url": {
+							"raw": "{{baseUrl}}/events?from=0&size=1000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"events"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "1000"
+								}
+							]
+						}
 					},
 					"response": []
 				},
