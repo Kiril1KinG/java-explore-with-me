@@ -1066,27 +1066,27 @@
 		{
 			"key": "user1Id",
 			"value": "0",
-			"type": "string"
+			"type": "number"
 		},
 		{
 			"key": "user2Id",
 			"value": "0",
-			"type": "string"
+			"type": "number"
 		},
 		{
 			"key": "eventId",
 			"value": "0",
-			"type": "string"
+			"type": "number"
 		},
 		{
 			"key": "commentId",
 			"value": "0",
-			"type": "string"
+			"type": "number"
 		},
 		{
 			"key": "categoryId",
 			"value": "0",
-			"type": "string"
+			"type": "number"
 		}
 	]
 }
