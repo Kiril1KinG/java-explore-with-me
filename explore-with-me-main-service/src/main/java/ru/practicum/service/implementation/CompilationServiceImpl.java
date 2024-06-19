@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.practicum.exception.DataNotFoundException;
+import ru.practicum.model.entity.Comment;
 import ru.practicum.model.entity.Compilation;
 import ru.practicum.model.entity.Event;
 import ru.practicum.repository.jpaRepository.CompilationRepository;
@@ -95,14 +96,19 @@ public class CompilationServiceImpl implements CompilationService {
 
     private void enrichEventsInCompilations(List<Compilation> compilations, Integer size) {
         List<Event> events = new ArrayList<>();
+        List<Long> eventsIds = events.stream()
+                .map(Event::getId)
+                .collect(Collectors.toList());
+
         compilations.forEach(comp -> events.addAll(new ArrayList<>(comp.getEvents())));
 
         Map<Long, Long> views = enricher.getEventsViews(events);
-        events.forEach(event -> event.setViews(views.get(event.getId())));
-
-        Map<Long, Integer> confirmedRequests = enricher.getConfirmedParticipationRequests(events.stream()
-                .map(Event::getId)
-                .collect(Collectors.toList()));
-        events.forEach(event -> event.setConfirmedRequests(confirmedRequests.get(event.getId())));
+        Map<Long, Integer> confirmedRequests = enricher.getConfirmedParticipationRequests(eventsIds);
+        Map<Long, List<Comment>> comments = enricher.getEventsComments(eventsIds);
+        events.forEach(event -> {
+            event.setViews(views.getOrDefault(event.getId(), 0L));
+            event.setConfirmedRequests(confirmedRequests.getOrDefault(event.getId(), 0));
+            event.setComments(comments.getOrDefault(comments.get(event.getId()), new ArrayList<>()));
+        });
     }
 }

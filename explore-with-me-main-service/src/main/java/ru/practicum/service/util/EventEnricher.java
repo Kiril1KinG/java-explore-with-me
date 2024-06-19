@@ -6,11 +6,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import ru.practicum.client.StatsClient;
 import ru.practicum.dto.HitStatsDto;
+import ru.practicum.model.entity.Comment;
 import ru.practicum.model.entity.Event;
 import ru.practicum.model.entity.ParticipationRequest;
 import ru.practicum.model.enumiration.EventState;
 import ru.practicum.model.enumiration.ParticipationStatus;
+import ru.practicum.repository.jpaRepository.CommentRepository;
 import ru.practicum.repository.jpaRepository.ParticipationRequestRepository;
+import ru.practicum.repository.specificaton.CommentSpec;
 import ru.practicum.repository.specificaton.ParticipationRequestSpec;
 
 import java.time.LocalDateTime;
@@ -27,6 +30,7 @@ public class EventEnricher {
 
     private final StatsClient statsClient;
     private final ParticipationRequestRepository requestRepository;
+    private final CommentRepository commentRepository;
 
     public Long getEventViews(Event event) {
         if (event.getState() == EventState.PUBLISHED) {
@@ -74,5 +78,27 @@ public class EventEnricher {
             eventsIdsAndConfirmedRequests.put(curEventId, 1);
         }
         return eventsIdsAndConfirmedRequests;
+    }
+
+    public Map<Long, List<Comment>> getEventsComments(List<Long> eventsIds) {
+        Specification<Comment> spec = Specification.where(CommentSpec.eventIdsIn(eventsIds));
+        List<Comment> comments = commentRepository.findAll(spec, Sort.by("event_id", "createdOn"));
+
+        Map<Long, List<Comment>> eventIdsAndComments = new HashMap<>();
+        for (int i = 0; i < comments.size(); i++) {
+            long curEventId = comments.get(i).getEvent().getId();
+            if (i != 0) {
+                long prevEventId = comments.get(i - 1).getEvent().getId();
+                if (prevEventId == curEventId) {
+                    List<Comment> commentsForEvent = eventIdsAndComments.get(curEventId);
+                    commentsForEvent.add(comments.get(i));
+                    eventIdsAndComments.put(curEventId, commentsForEvent);
+                    continue;
+                }
+            }
+            eventIdsAndComments.put(curEventId, new ArrayList<>());
+            eventIdsAndComments.get(curEventId).add(comments.get(i));
+        }
+        return eventIdsAndComments;
     }
 }
